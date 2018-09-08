@@ -121,3 +121,11 @@ automake
 autoconf
 ```
 
+
+## 其它
+
+写配置文件很累的，调试了半天，写分享文章也费了一个晚上。给个赞赏嘛233333。
+
+![微信赞赏码]([https://raw.githubusercontent.com/wiki/HorseLuke/msmtp-windows-cygwin-conf/img/weixin_zanshangcode.jpg)
+
+
