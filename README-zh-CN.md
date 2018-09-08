@@ -1,7 +1,6 @@
-# msmtp configure example in Windows + Cygwin (with msmtpd service script)
+# 在Windows + Cygwin运行msmtp的配置文件示例（含运行msmtpd为服务的脚本）
 
-[Chinese Version README (With more detail) / 中文说明文档](./README-zh-CN.md)
-
+[English Version README](./README.md)
 
 
 ## 背景知识
