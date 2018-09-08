@@ -1,19 +1,21 @@
-# msmtp configure example in Windows + Cygwin (with msmtpd service script)
-
-[Chinese Version README (With more detail) / 中文说明文档](./README-zh-CN.md)
+# 在Windows + Cygwin运行msmtp的配置文件示例（含运行msmtpd为服务的脚本）
 
 
-## Background
-
-msmtp is an SMTP client, has sendmail compatible interface. The Maintainer is Martin Lambers.
-
-Source Code: https://marlam.de/msmtp/
+[English Version README](./README-en.md)
 
 
-In 2018-09-04, msmtp released version 1.8.0. In this version, it introduces a Minimal SMTP server(msmtpd).
+## 背景知识
+
+msmtp是一个SMTP客户端，兼容sendmail命令行，非常适合替代sendmail使用。开发和维护者是Martin Lambers。
+
+主页和源代码下载地址：https://marlam.de/msmtp/
 
 
-Doc: https://marlam.de/msmtp/msmtp.html#Minimal-SMTP-server-_0028msmtpd_0029
+msmtp与2018-9-4发布1.8.0版本，从这个版本开始，它拥有了一个微型的SMTP服务器应用，msmtpd。
+
+msmtpd可用于无法直接调用sendmail命令行的场景。
+
+详细文档见: https://marlam.de/msmtp/msmtp.html#Minimal-SMTP-server-_0028msmtpd_0029
 
 ```
 
@@ -32,26 +34,28 @@ Only run msmtpd if you know you need it. Only use a local interface to listen on
 
 ## Windows + Cygwin + msmtpd
 
-New feature msmtpd lacks of support windows socket, thus compiling in MINGW64 will failed.
+然而msmtpd这个新特性暂时不支持原生windows socket，这使得想以MINGW64编译成原生Windows应用时，会失败报错。
 
-So if you want to use msmtpd in Windows, you have to use Cygwin. 
+所以目前来说，如果要在Windows使用msmtpd，你暂时只能依赖Cygwin。
 
-Note: Windows Subsystem for Linux (WSL) is OK, but this feature only supported in Windows 10 Insider Preview Build 14328 / Windows 10 Fall Creators Update (16215) / Windows Server 1709 and later.
-
-Ref: https://gitlab.marlam.de/marlam/msmtp/issues/12
+备注： Windows上的Linux子系统（Windows Subsystem for Linux，简称WSL）也行。但只支持Windows 10 Insider Preview Build 14328、Windows 10 Fall Creators Update (16215)、或者 Windows Server 1709和之后的版本。
 
 
+参考资料：
+
+https://gitlab.marlam.de/marlam/msmtp/issues/12
 
 
-## Common scenarios for using msmtpd in Windows
 
-1. PHP mail() function
+## 在Windows使用msmtpd的常见场景
 
-In the past, Windows does not support sendmail, but PHP mail() function rely on this.
+1. PHP mail()函数的原生支持。
 
-Now with msmtpd, you can easily use PHP mail() function in Windows.
+在以前，windows并没有sendmail或者类似的替代品，这使得依赖sendmail的PHP mail()函数无法在Windows正常使用。
 
-php.ini Example:
+现在有了msmtpd，PHP mail()也能在Windows正常使用啦！
+
+php.ini配置示例:
 
 ```
 
@@ -61,7 +65,7 @@ php.ini Example:
 SMTP = 127.0.0.1
 
 ; http://php.net/smtp-port
-; msmtpd port
+; msmtpd监听的端口
 smtp_port = 668
 
 ; For Win32 only.
@@ -70,24 +74,23 @@ sendmail_from = "my_email_account@aaaaa.com"
 
 ```
 
+## 关于本项目
 
-## About this repo
+本项目主要包含一些文件，用于在Windows运行msmtp和msmtpd，例如：
 
-This repo contains some files to run msmtp and msmtpd in Windows with Cygwin. For example: 
+  - 运行msmtp的配置文件
 
-  - Configuration files to run msmtp
+  - 以服务形式运行msmtpd的脚本
 
-  - Scripts to run msmtpd in Service
+注意：
 
-Attention:
+  - 本项目要求msmtp版本号为1.8.0或以上。
 
-  - This repo need msmtp 1.8.0 and above.
-
-  - This repo assumes Cygwin installation path in Windows Dir `C:\cygwin`. You have to change some file to fit the real installation path.
+  - 本项目假设Cygwin安装在Windows目录`C:\cygwin`。你需要自行修正配置和脚本文件，指向到真正的安装目录。
   
-  - This repo assumes msmtp 1.8.0 installation path in Cygwin path `/opt/msmtp-1.8.0` (Windows Dir is `C:\cygwin\opt\msmtp-1.8.0`). You have to change some file to fit the real installation path.
+  - 本项目假设msmtp 1.8.0安装在Cygwin目录`/opt/msmtp-1.8.0` (Windows目录为`C:\cygwin\opt\msmtp-1.8.0`)。你需要自行修正配置和脚本文件，指向到真正的安装目录。
   
-  - This repo was tested on msmtp 1.8.0 with these compiling commands (assumes msmtp 1.8.0 source code in `D:\src\msmtp-1.8.0`):
+  - 本项目假设如下msmtp 1.8.0编译参数和命令行，并且在这些编译参数下测试通过（假设msmtp 1.8.0源代码为`D:\src\msmtp-1.8.0`）:
 
 ```
 cd "D:\src\msmtp-1.8.0"
@@ -97,7 +100,8 @@ make
 make install
 ```
 
-  - Before compiling msmtp 1.8.0 in Cygwin, you need to install these packages:
+
+  - 在Cygwin编译msmtp 1.8.0之前，你需要安装如下packages:
 
 ```
 gnutls
@@ -117,3 +121,12 @@ make
 automake
 autoconf
 ```
+
+
+## 其它
+
+写配置文件很累的，调试了半天，写分享文章也费了一个晚上。给个赞赏嘛233333。
+
+![微信赞赏码](https://raw.githubusercontent.com/HorseLuke/Assets/master/img/weixin_zanshangcode.jpg)
+
+
