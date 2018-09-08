@@ -69,7 +69,7 @@ smtp_port = 668
 
 ; For Win32 only.
 ; http://php.net/sendmail-from
-sendmail_from = "aaaaa@aaaaa.com"
+sendmail_from = "my_email_account@aaaaa.com"
 
 ```
 
